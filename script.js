@@ -91,7 +91,8 @@ document.querySelectorAll('.proj-card, .cert-card, .achieve-card').forEach(card 
 document.querySelectorAll('.video-card').forEach(card => {
   card.addEventListener('click', () => {
     const id = card.getAttribute('data-id');
-    card.innerHTML = `<iframe width="100%" height="220" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;
+    card.innerHTML = `<iframe width="100%" height="100%" style="aspect-ratio:16/9; border:none;" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;
+    card.style.padding = '0'; // Remove padding if any to make iframe fill the card
   });
 });
 
@@ -138,3 +139,78 @@ window.addEventListener('scroll', () => {
     a.style.color = a.getAttribute('href') === '#' + current ? 'var(--neon-cyan)' : '';
   });
 });
+
+// ── Theme Toggle ──
+const themeToggleBtn = document.getElementById('theme-toggle');
+
+function updateGitHubStatsTheme(isLight) {
+  const ghStats = document.getElementById('gh-stats');
+  const ghLangs = document.getElementById('gh-langs');
+  if (ghStats) {
+    ghStats.src = isLight 
+      ? "https://github-readme-stats.vercel.app/api?username=AvaishAnsari&show_icons=true&theme=default&hide_border=true&bg_color=f8fafc&title_color=0f172a&icon_color=3b82f6&text_color=475569"
+      : "https://github-readme-stats.vercel.app/api?username=AvaishAnsari&show_icons=true&theme=radical&hide_border=true&bg_color=050508&title_color=00ffff&icon_color=ff00ff&text_color=e2e8f0";
+  }
+  if (ghLangs) {
+    ghLangs.src = isLight
+      ? "https://github-readme-stats.vercel.app/api/top-langs/?username=AvaishAnsari&layout=compact&theme=default&hide_border=true&bg_color=f8fafc&title_color=0f172a&text_color=475569"
+      : "https://github-readme-stats.vercel.app/api/top-langs/?username=AvaishAnsari&layout=compact&theme=radical&hide_border=true&bg_color=050508&title_color=00ffff&text_color=e2e8f0";
+  }
+}
+
+if (themeToggleBtn) {
+  const savedTheme = localStorage.getItem('portfolio-theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light-mode');
+    themeToggleBtn.textContent = '🌙';
+    updateGitHubStatsTheme(true);
+  } else {
+    updateGitHubStatsTheme(false);
+  }
+
+  themeToggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    
+    if (isLight) {
+      themeToggleBtn.textContent = '🌙';
+      localStorage.setItem('portfolio-theme', 'light');
+    } else {
+      themeToggleBtn.textContent = '🌞';
+      localStorage.setItem('portfolio-theme', 'dark');
+    }
+    updateGitHubStatsTheme(isLight);
+  });
+}
+
+// ── Project Modal Logic ──
+const modal = document.getElementById('project-modal');
+const modalBody = document.getElementById('modal-body');
+const closeModal = document.querySelector('.modal .close');
+
+if (modal && modalBody && closeModal) {
+  document.querySelectorAll('.demo-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.classList.remove('hidden');
+      modalBody.innerHTML = `
+        <h3 style="margin-bottom:1rem;">Project Demo</h3>
+        <div style="background:rgba(0,0,0,0.5); width:100%; height:250px; display:flex; align-items:center; justify-content:center; border:1px dashed var(--neon-mag); border-radius:10px;">
+          <p style="color:#9ca3af;">Demo Video / GIF Placeholder<br/><span style="font-size:0.8rem;">(Replace this block with an iframe or img tag)</span></p>
+        </div>
+      `;
+    });
+  });
+
+  closeModal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    modalBody.innerHTML = '';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+      modalBody.innerHTML = '';
+    }
+  });
+}
