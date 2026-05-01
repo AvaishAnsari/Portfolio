@@ -3,11 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Primary Meta Tags -->
   <title>Mohd Avaish – Software Engineer Portfolio</title>
+  <meta name="title" content="Mohd Avaish – Software Engineer Portfolio" />
   <meta name="description" content="Portfolio of Mohd Avaish – CS student, full-stack developer, YouTuber. Projects, skills, experience and more." />
+  <meta name="keywords" content="Mohd Avaish, Software Engineer, Full Stack Developer, CS Student, Web Developer, React, Node.js" />
+  <meta name="author" content="Mohd Avaish" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://avaish.dev/" />
+  <meta property="og:title" content="Mohd Avaish – Software Engineer Portfolio" />
+  <meta property="og:description" content="Portfolio of Mohd Avaish – CS student, full-stack developer, YouTuber. Projects, skills, experience and more." />
+  <meta property="og:image" content="assets/profile.jpg" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://avaish.dev/" />
+  <meta property="twitter:title" content="Mohd Avaish – Software Engineer Portfolio" />
+  <meta property="twitter:description" content="Portfolio of Mohd Avaish – CS student, full-stack developer, YouTuber. Projects, skills, experience and more." />
+  <meta property="twitter:image" content="assets/profile.jpg" />
+
+  <!-- Favicon (SVG for all modern browsers) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💻</text></svg>" />
+
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -32,22 +57,27 @@
 
   <!-- Navigation -->
   <header class="nav">
-    <nav>
-      <ul>
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#certifications">Certs</a></li>
-        <!-- <li><a href="#testimonials">Testimonials</a></li> -->
-        <li><a href="#achievements">Awards</a></li>
-        <li><a href="#youtube">YouTube</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><button id="theme-toggle" class="btn-icon" style="background:none; border:none; padding:0; margin-left:1rem; font-size:1.2rem; outline:none;" aria-label="Toggle Theme">🌞</button></li>
-      </ul>
-    </nav>
+    <div class="nav-container">
+      <div class="nav-logo">AVAISH</div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="nav-menu">
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#certifications">Certs</a></li>
+          <li><a href="#achievements">Awards</a></li>
+          <li><a href="#youtube">YouTube</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><button id="theme-toggle" class="btn-icon" style="background:none; border:none; padding:0; font-size:1.2rem; outline:none; cursor:pointer;" aria-label="Toggle Theme">🌞</button></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
   <!-- ═══ HERO ═══ -->
@@ -110,8 +140,12 @@
               <li>Machine Learning &amp; AI</li>
               <li>Cloud Computing</li>
               <li>Content Creation</li>
-              <li>Building Startups</li>
             </ul>
+          </div>
+          <div class="about-card glass animate" data-anim="fade" style="margin-top:1rem;">
+            <div class="about-card-icon">🚀</div>
+            <h4>Currently Learning</h4>
+            <p style="font-size: 0.9rem; margin-top:0.5rem;">Advancing skills in <span class="accent">Predictive Analytics</span> and pursuing continuous learning through <span class="accent">The Odin Project</span> and <span class="accent">CS50</span>.</p>
           </div>
         </div>
       </div>
@@ -154,36 +188,36 @@
         <div class="skill-cat glass animate" data-anim="fade">
           <h4>💻 Languages</h4>
           <div class="tag-group">
-            <span class="tag glow-tag">Java</span>
-            <span class="tag glow-tag">Python</span>
-            <span class="tag glow-tag">C++</span>
-            <span class="tag glow-tag">JavaScript</span>
-            <span class="tag glow-tag">TypeScript</span>
-            <span class="tag glow-tag">SQL</span>
-            <span class="tag glow-tag">HTML5</span>
-            <span class="tag glow-tag">CSS3</span>
+            <span class="tag glow-tag"><i class="devicon-java-plain colored"></i> Java</span>
+            <span class="tag glow-tag"><i class="devicon-python-plain colored"></i> Python</span>
+            <span class="tag glow-tag"><i class="devicon-cplusplus-plain colored"></i> C++</span>
+            <span class="tag glow-tag"><i class="devicon-javascript-plain colored"></i> JavaScript</span>
+            <span class="tag glow-tag"><i class="devicon-typescript-plain colored"></i> TypeScript</span>
+            <span class="tag glow-tag"><i class="devicon-azuresqldatabase-plain colored"></i> SQL</span>
+            <span class="tag glow-tag"><i class="devicon-html5-plain colored"></i> HTML5</span>
+            <span class="tag glow-tag"><i class="devicon-css3-plain colored"></i> CSS3</span>
           </div>
         </div>
         <div class="skill-cat glass animate" data-anim="fade">
           <h4>⚙️ Frameworks</h4>
           <div class="tag-group">
-            <span class="tag glow-tag">React.js</span>
-            <span class="tag glow-tag">Next.js</span>
-            <span class="tag glow-tag">Node.js</span>
-            <span class="tag glow-tag">Express.js</span>
-            <span class="tag glow-tag">TensorFlow</span>
+            <span class="tag glow-tag"><i class="devicon-react-original colored"></i> React.js</span>
+            <span class="tag glow-tag"><i class="devicon-nextjs-plain"></i> Next.js</span>
+            <span class="tag glow-tag"><i class="devicon-nodejs-plain-wordmark colored"></i> Node.js</span>
+            <span class="tag glow-tag"><i class="devicon-express-original"></i> Express.js</span>
+            <span class="tag glow-tag"><i class="devicon-tensorflow-original colored"></i> TensorFlow</span>
             <span class="tag glow-tag">LangGraph</span>
           </div>
         </div>
         <div class="skill-cat glass animate" data-anim="fade">
           <h4>🗄️ Databases &amp; Cloud</h4>
           <div class="tag-group">
-            <span class="tag glow-tag">MongoDB</span>
-            <span class="tag glow-tag">PostgreSQL</span>
-            <span class="tag glow-tag">Supabase</span>
-            <span class="tag glow-tag">Firebase</span>
-            <span class="tag glow-tag">Google Cloud</span>
-            <span class="tag glow-tag">Docker</span>
+            <span class="tag glow-tag"><i class="devicon-mongodb-plain colored"></i> MongoDB</span>
+            <span class="tag glow-tag"><i class="devicon-postgresql-plain colored"></i> PostgreSQL</span>
+            <span class="tag glow-tag"><i class="devicon-supabase-plain colored"></i> Supabase</span>
+            <span class="tag glow-tag"><i class="devicon-firebase-plain colored"></i> Firebase</span>
+            <span class="tag glow-tag"><i class="devicon-googlecloud-plain colored"></i> Google Cloud</span>
+            <span class="tag glow-tag"><i class="devicon-docker-plain colored"></i> Docker</span>
           </div>
         </div>
         <div class="skill-cat glass animate" data-anim="fade">
@@ -195,7 +229,6 @@
             <span class="tag glow-tag">NLP</span>
             <span class="tag glow-tag">Vertex AI</span>
           </div>
-        </div>
         </div>
       </div>
       
@@ -221,78 +254,104 @@
       <div class="projects-grid">
 
         <div class="proj-card glass animate" data-anim="fade">
-          <div class="proj-header">
-            <span class="proj-icon">⚡</span>
-            <span class="proj-status live">Live</span>
+          <div class="proj-banner">
+            <img src="assets/bidzo_banner_1777665867342.png" alt="BidZo Auction Platform" loading="lazy" />
           </div>
-          <h3>BidZo – Real-Time Auction Platform</h3>
-          <p>Full-stack real-time auction system with live bidding, secure role-based access, and payment integration.</p>
-          <div class="tag-group" style="margin:1rem 0;">
-            <span class="tag">React.js</span><span class="tag">Supabase</span><span class="tag">PostgreSQL</span><span class="tag">Tailwind CSS</span><span class="tag">Razorpay</span>
-          </div>
-          <div style="display:flex; gap:0.5rem;">
-            <a href="https://github.com/AvaishAnsari/BidZo" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
-            <a href="https://bid-zo-pecy.vercel.app/" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none; text-decoration:none;">▶ Live Demo</a>
-          </div>
-        </div>
-
-        <div class="proj-card glass animate" data-anim="fade">
-          <div class="proj-header">
-            <span class="proj-icon">🚌</span>
-          </div>
-          <h3>Bus Scheduling System</h3>
-          <p>Optimized bus routes and timetables using algorithmic planning and real-time data processing.</p>
-          <div class="tag-group" style="margin:1rem 0;">
-            <span class="tag">Python</span><span class="tag">Algorithms</span><span class="tag">Data Structures</span>
-          </div>
-          <div style="display:flex; gap:0.5rem;">
-            <a href="https://github.com/AvaishAnsari/BUS-SCHEDULING-SYSTEM" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
-            <button class="btn glow demo-btn" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none;">▶ Demo</button>
+          <div class="proj-content">
+            <div class="proj-header">
+              <span class="proj-icon">⚡</span>
+              <span class="proj-status live">Live</span>
+            </div>
+            <h3>BidZo – Real-Time Auction Platform</h3>
+            <p>Full-stack real-time auction system with live bidding, secure role-based access, and payment integration.</p>
+            <div class="tag-group" style="margin:1rem 0;">
+              <span class="tag">React.js</span><span class="tag">Supabase</span><span class="tag">PostgreSQL</span><span class="tag">Tailwind CSS</span><span class="tag">Razorpay</span>
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:auto;">
+              <a href="https://github.com/AvaishAnsari/BidZo" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
+              <a href="https://bid-zo-pecy.vercel.app/" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none; text-decoration:none;">▶ Live Demo</a>
+            </div>
           </div>
         </div>
 
         <div class="proj-card glass animate" data-anim="fade">
-          <div class="proj-header">
-            <span class="proj-icon">🏥</span>
+          <div class="proj-banner">
+            <img src="assets/bus_banner_1777665881410.png" alt="Bus Scheduling System" loading="lazy" />
           </div>
-          <h3>Rural Medical Consultation</h3>
-          <p>Connecting patients in remote areas with doctors via video-consultations and AI triage system.</p>
-          <div class="tag-group" style="margin:1rem 0;">
-            <span class="tag">Node.js</span><span class="tag">Socket.io</span><span class="tag">MongoDB</span><span class="tag">AI</span>
-          </div>
-          <div style="display:flex; gap:0.5rem;">
-            <a href="https://github.com/AvaishAnsari/RURAL-MEDICAL-CONSULTATION-SYSTEM" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
-            <button class="btn glow demo-btn" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none;">▶ Demo</button>
-          </div>
-        </div>
-
-        <div class="proj-card glass animate" data-anim="fade">
-          <div class="proj-header">
-            <span class="proj-icon">🔍</span>
-          </div>
-          <h3>Corruption Detection System</h3>
-          <p>AI-powered detection of fraudulent activities in financial datasets using ML classification models.</p>
-          <div class="tag-group" style="margin:1rem 0;">
-            <span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">NLP</span><span class="tag">Data Analytics</span>
-          </div>
-          <div style="display:flex; gap:0.5rem;">
-            <a href="https://github.com/AvaishAnsari/CORRUPTION-DETECTION-SYSTEM" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
-            <button class="btn glow demo-btn" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none;">▶ Demo</button>
+          <div class="proj-content">
+            <div class="proj-header">
+              <span class="proj-icon">🚌</span>
+              <span class="proj-status live">Live</span>
+            </div>
+            <h3>Bus Scheduling System</h3>
+            <p>Optimized bus routes and timetables using algorithmic planning and real-time data processing.</p>
+            <div class="tag-group" style="margin:1rem 0;">
+              <span class="tag">Python</span><span class="tag">Algorithms</span><span class="tag">Data Structures</span>
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:auto;">
+              <a href="https://github.com/AvaishAnsari/BUS-SCHEDULING-SYSTEM" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
+              <a href="https://bus-scheduling-system-chi.vercel.app/" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none; text-decoration:none;">▶ Live Demo</a>
+            </div>
           </div>
         </div>
 
         <div class="proj-card glass animate" data-anim="fade">
-          <div class="proj-header">
-            <span class="proj-icon">🛒</span>
+          <div class="proj-banner">
+            <img src="assets/medical_banner_1777665897528.png" alt="Rural Medical Consultation" loading="lazy" />
           </div>
-          <h3>SmartShop – Full Stack CRUD App</h3>
-          <p>A full-stack product management app with Node.js backend, MongoDB database and REST API.</p>
-          <div class="tag-group" style="margin:1rem 0;">
-            <span class="tag">Node.js</span><span class="tag">Express.js</span><span class="tag">MongoDB</span><span class="tag">EJS</span>
+          <div class="proj-content">
+            <div class="proj-header">
+              <span class="proj-icon">🏥</span>
+            </div>
+            <h3>Rural Medical Consultation</h3>
+            <p>Connecting patients in remote areas with doctors via video-consultations and AI triage system.</p>
+            <div class="tag-group" style="margin:1rem 0;">
+              <span class="tag">Node.js</span><span class="tag">Socket.io</span><span class="tag">MongoDB</span><span class="tag">AI</span>
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:auto;">
+              <a href="https://github.com/AvaishAnsari/RURAL-MEDICAL-CONSULTATION-SYSTEM" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
+              <button class="btn glow demo-btn" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none;">▶ Demo</button>
+            </div>
           </div>
-          <div style="display:flex; gap:0.5rem;">
-            <a href="https://github.com/AvaishAnsari/SMARTSHOP" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
-            <button class="btn glow demo-btn" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none;">▶ Demo</button>
+        </div>
+
+        <div class="proj-card glass animate" data-anim="fade">
+          <div class="proj-banner">
+            <img src="assets/fraud_banner_1777665914345.png" alt="Corruption Detection System" loading="lazy" />
+          </div>
+          <div class="proj-content">
+            <div class="proj-header">
+              <span class="proj-icon">🔍</span>
+            </div>
+            <h3>Corruption Detection System</h3>
+            <p>An end-to-end <span class="accent">Predictive Analytics</span> pipeline utilizing Exploratory Data Analysis (EDA) and Machine Learning classification to detect fraudulent financial activities.</p>
+            <div class="tag-group" style="margin:1rem 0;">
+              <span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">NLP</span><span class="tag">Data Analytics</span>
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:auto;">
+              <a href="https://github.com/AvaishAnsari/CORRUPTION-DETECTION-SYSTEM" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
+              <button class="btn glow demo-btn" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none;">▶ Demo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-card glass animate" data-anim="fade">
+          <div class="proj-banner">
+            <img src="assets/shop_banner_1777665930933.png" alt="SmartShop CRUD App" loading="lazy" />
+          </div>
+          <div class="proj-content">
+            <div class="proj-header">
+              <span class="proj-icon">🛒</span>
+            </div>
+            <h3>SmartShop – Full Stack CRUD App</h3>
+            <p>A full-stack product management app with Node.js backend, MongoDB database and REST API.</p>
+            <div class="tag-group" style="margin:1rem 0;">
+              <span class="tag">Node.js</span><span class="tag">Express.js</span><span class="tag">MongoDB</span><span class="tag">EJS</span>
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:auto;">
+              <a href="https://github.com/AvaishAnsari/SMARTSHOP" target="_blank" class="btn glow" style="font-size:0.85rem;padding:0.5rem 1rem;">GitHub →</a>
+              <button class="btn glow demo-btn" style="font-size:0.85rem;padding:0.5rem 1rem; background:none; border-color:var(--neon-mag); color:var(--neon-mag); cursor:pointer; outline:none;">▶ Demo</button>
+            </div>
           </div>
         </div>
 
@@ -490,11 +549,13 @@
           </div>
         </div>
         <div class="contact-form-wrap glass animate" data-anim="fade">
-          <form id="contact-form">
+          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
             <input type="text" name="name" placeholder="Your Name" required />
             <input type="email" name="email" placeholder="Your Email" required />
             <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
             <button type="submit" class="btn glow">Send Message 🚀</button>
+            <p id="form-result" style="display:none; text-align:center; margin-top:1rem; font-weight:600; color:var(--neon-cyan);"></p>
           </form>
         </div>
       </div>

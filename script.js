@@ -4,6 +4,24 @@ window.addEventListener('load', () => {
   if (preloader) setTimeout(() => preloader.classList.add('hidden'), 600);
 });
 
+// ── Mobile Menu Toggle ──
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('nav-menu');
+if (hamburger && navMenu) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+  });
+  // Close menu on link click
+  document.querySelectorAll('#nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navMenu.classList.remove('active');
+    });
+  });
+}
+
+
 // ── Scroll Progress ──
 const scrollProgress = document.getElementById('scroll-progress');
 window.addEventListener('scroll', () => {
@@ -61,13 +79,24 @@ function eraseText() {
 if (typingEl) typeText();
 
 // ── Scroll Reveal ──
+let revealDelay = 0;
+let revealTimeout;
+
 const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      e.target.classList.add('visible');
+      setTimeout(() => {
+        e.target.classList.add('visible');
+      }, revealDelay);
+      revealDelay += 150; // Stagger delay for elements appearing at the same time
       revealObserver.unobserve(e.target);
     }
   });
+  
+  clearTimeout(revealTimeout);
+  revealTimeout = setTimeout(() => {
+    revealDelay = 0;
+  }, 100); // Reset delay when this batch of reveals is done
 }, { threshold: 0.1 });
 document.querySelectorAll('.animate').forEach(el => revealObserver.observe(el));
 
@@ -98,15 +127,46 @@ document.querySelectorAll('.video-card').forEach(card => {
 
 // ── Contact Form ──
 const form = document.getElementById('contact-form');
+const result = document.getElementById('form-result');
 if (form) {
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', function(e) {
     e.preventDefault();
-    const name    = form.name.value.trim();
-    const email   = form.email.value.trim();
-    const message = form.message.value.trim();
-    const subject = encodeURIComponent('Portfolio Contact – ' + name);
-    const body    = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-    window.location.href = `mailto:avaishansari789@gmail.com?subject=${subject}&body=${body}`;
+    const formData = new FormData(form);
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+    
+    result.style.display = 'block';
+    result.style.color = 'var(--neon-cyan)';
+    result.innerHTML = 'Sending... 🚀';
+    
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: json
+    })
+    .then(async (response) => {
+      let json = await response.json();
+      if (response.status == 200) {
+        result.innerHTML = 'Message sent successfully! 🚀';
+      } else {
+        result.style.color = 'var(--neon-red)';
+        result.innerHTML = json.message;
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      result.style.color = 'var(--neon-red)';
+      result.innerHTML = 'Something went wrong!';
+    })
+    .then(function() {
+      form.reset();
+      setTimeout(() => {
+        result.style.display = 'none';
+      }, 5000);
+    });
   });
 }
 
