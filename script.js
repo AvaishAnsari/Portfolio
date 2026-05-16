@@ -171,17 +171,19 @@ if (form) {
 }
 
 // ── Vanta.js Hero Background ──
+let vantaEffect = null;
 document.addEventListener('DOMContentLoaded', () => {
   if (window.VANTA) {
-    window.VANTA.NET({
+    const isLight = document.body.classList.contains('light-mode') || localStorage.getItem('portfolio-theme') === 'light';
+    vantaEffect = window.VANTA.NET({
       el: '#hero',
       mouseControls: true,
       touchControls: true,
       gyroControls: false,
       minHeight: 200, minWidth: 200,
       scale: 1.0, scaleMobile: 1.0,
-      color: 0x00ffff,
-      backgroundColor: 0x050508,
+      color: isLight ? 0x0ea5e9 : 0x00ffff,
+      backgroundColor: isLight ? 0xf8fafc : 0x050508,
       points: 10, maxDistance: 20, spacing: 18
     });
   }
@@ -215,6 +217,13 @@ function updateGitHubStatsTheme(isLight) {
     ghLangs.src = isLight
       ? "https://github-readme-stats.vercel.app/api/top-langs/?username=AvaishAnsari&layout=compact&theme=default&hide_border=true&bg_color=f8fafc&title_color=0f172a&text_color=475569"
       : "https://github-readme-stats.vercel.app/api/top-langs/?username=AvaishAnsari&layout=compact&theme=radical&hide_border=true&bg_color=050508&title_color=00ffff&text_color=e2e8f0";
+  }
+  
+  if (vantaEffect) {
+    vantaEffect.setOptions({
+      color: isLight ? 0x0ea5e9 : 0x00ffff,
+      backgroundColor: isLight ? 0xf8fafc : 0x050508
+    });
   }
 }
 
