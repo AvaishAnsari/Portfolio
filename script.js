@@ -257,17 +257,72 @@ const modal = document.getElementById('project-modal');
 const modalBody = document.getElementById('modal-body');
 const closeModal = document.querySelector('.modal .close');
 
+const demoData = {
+  'corruption': {
+    title: 'Corruption Detection System',
+    url: 'https://github.com/AvaishAnsari/CORRUPTION-DETECTION-SYSTEM',
+    description: 'An end-to-end Predictive Analytics pipeline using EDA and ML classification.',
+    isGithub: true,
+    note: 'This is a Python/ML project — view the full code and analysis on GitHub.',
+  },
+  'smartshop': {
+    title: 'SmartShop – Full Stack CRUD App',
+    url: 'https://github.com/AvaishAnsari/SMARTSHOP',
+    description: 'A full-stack product management app with Node.js, MongoDB and REST API.',
+    isGithub: true,
+    note: 'View source code and setup instructions on GitHub.',
+  },
+};
+
 if (modal && modalBody && closeModal) {
   document.querySelectorAll('.demo-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+      const key = btn.getAttribute('data-demo');
+      const demo = demoData[key] || {};
       modal.classList.remove('hidden');
-      modalBody.innerHTML = `
-        <h3 style="margin-bottom:1rem;">Project Demo</h3>
-        <div style="background:rgba(0,0,0,0.5); width:100%; height:250px; display:flex; align-items:center; justify-content:center; border:1px dashed var(--neon-mag); border-radius:10px;">
-          <p style="color:#9ca3af;">Demo Video / GIF Placeholder<br/><span style="font-size:0.8rem;">(Replace this block with an iframe or img tag)</span></p>
-        </div>
-      `;
+
+      if (demo.isGithub) {
+        modalBody.innerHTML = `
+          <h3 style="margin-bottom:1.2rem; font-size:1.3rem;">${demo.title || 'Project Demo'}</h3>
+          <p style="color:#aaa; margin-bottom:1.2rem; line-height:1.6;">${demo.description || ''}</p>
+          <div style="background:rgba(0,255,255,0.05); border:1px solid var(--neon-cyan); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
+            <p style="color:var(--neon-cyan); font-weight:600; margin-bottom:0.5rem;">ℹ️ About this Project</p>
+            <p style="color:#cbd5e1; font-size:0.95rem;">${demo.note || ''}</p>
+          </div>
+          <a href="${demo.url}" target="_blank" rel="noopener noreferrer"
+            style="display:inline-block; padding:0.75rem 1.75rem; background:linear-gradient(135deg,var(--neon-cyan),var(--neon-mag)); color:#000; font-weight:700; border-radius:8px; text-decoration:none; font-size:1rem;">
+            View on GitHub →
+          </a>
+        `;
+      } else {
+        modalBody.innerHTML = `
+          <h3 style="margin-bottom:1.2rem; font-size:1.3rem;">${demo.title || 'Project Demo'}</h3>
+          <div style="background:rgba(0,255,255,0.05); border:1px solid var(--neon-cyan); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
+            <p style="color:var(--neon-cyan); font-weight:700; margin-bottom:0.75rem;">🔑 Demo Access — Use Any Credentials</p>
+            <div style="display:grid; gap:0.5rem;">
+              <div style="display:flex; align-items:center; gap:0.75rem; background:rgba(255,255,255,0.05); padding:0.6rem 1rem; border-radius:8px;">
+                <span style="font-size:1.1rem;">📧</span>
+                <div>
+                  <span style="color:#64748b; font-size:0.75rem; display:block;">Email</span>
+                  <span style="color:#e2e8f0; font-weight:600;">any Gmail address (e.g. test@gmail.com)</span>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:0.75rem; background:rgba(255,255,255,0.05); padding:0.6rem 1rem; border-radius:8px;">
+                <span style="font-size:1.1rem;">🔒</span>
+                <div>
+                  <span style="color:#64748b; font-size:0.75rem; display:block;">Password</span>
+                  <span style="color:#e2e8f0; font-weight:600;">any password works</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="${demo.url}" target="_blank" rel="noopener noreferrer"
+            style="display:inline-block; padding:0.75rem 1.75rem; background:linear-gradient(135deg,var(--neon-cyan),var(--neon-mag)); color:#000; font-weight:700; border-radius:8px; text-decoration:none; font-size:1rem;">
+            Open Live Demo →
+          </a>
+        `;
+      }
     });
   });
 
