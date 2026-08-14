@@ -353,41 +353,203 @@ if (modal && modalBody && closeModal) {
   });
 }
 
-// ── GitHub Activity Dashboard Generator ──
+// ── GitHub Activity Dashboard – Live Data from GitHub API ──
 document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('gh-graph-container');
-  if (container) {
-    container.innerHTML = '';
-    // Seeded density distribution for natural looking contribution heatmap
-    const levels = [0, 0, 1, 0, 2, 0, 1, 3, 0, 0, 1, 2, 4, 1, 0, 2, 3, 1, 0, 1, 2, 0, 3, 4, 1, 2, 0, 1, 3, 2, 1, 0, 4, 2, 1, 0, 2];
-    
-    for (let col = 0; col < 52; col++) {
-      const colDiv = document.createElement('div');
-      colDiv.className = 'gh-graph-col';
-      for (let row = 0; row < 7; row++) {
-        const dayDiv = document.createElement('div');
-        const level = levels[(col * 7 + row) % levels.length];
-        const contribCount = level * 3;
-        
-        dayDiv.className = `gh-graph-day lvl-${level}`;
-        dayDiv.title = level > 0 ? `${contribCount} contributions` : 'No contributions';
-        colDiv.appendChild(dayDiv);
-      }
-      container.appendChild(colDiv);
-    }
-    
-    // Auto scroll heatmap to recent end
-    container.scrollLeft = container.scrollWidth;
-  }
+  const GH_USERNAME = 'AvaishAnsari';
+  const API_BASE = `https://api.github.com/users/${GH_USERNAME}`;
 
-  // Fetch real public repository count from GitHub official API
-  fetch('https://api.github.com/users/AvaishAnsari')
-    .then(res => res.json())
+  // ─── Color palette for languages ───
+  const LANG_COLORS = {
+    'JavaScript': '#f1e05a',
+    'Python': '#3572A5',
+    'Java': '#b07219',
+    'C++': '#f34b7d',
+    'TypeScript': '#3178c6',
+    'HTML': '#e34c26',
+    'CSS': '#563d7c',
+    'C': '#555555',
+    'Shell': '#89e051',
+    'Dart': '#00B4AB',
+    'Kotlin': '#A97BFF',
+    'Go': '#00ADD8',
+    'Ruby': '#701516',
+    'PHP': '#4F5D95',
+    'Jupyter Notebook': '#DA5B0B',
+    'Dockerfile': '#384d54',
+    'SCSS': '#c6538c',
+    'Vue': '#41b883',
+    'EJS': '#a91e50'
+  };
+  const DEFAULT_LANG_COLOR = '#8b949e';
+
+  // ─── 1. Fetch profile → repo count ───
+  fetch(API_BASE)
+    .then(r => r.json())
     .then(data => {
       if (data && data.public_repos) {
-        const repoEl = document.getElementById('gh-repo-count');
-        if (repoEl) repoEl.textContent = data.public_repos + '+';
+        const el = document.getElementById('gh-repo-count');
+        if (el) el.textContent = data.public_repos + '+';
       }
+    })
+    .catch(() => {});
+
+  // ─── 2. Fetch events → real contribution heatmap + contribution count ───
+  // GitHub Events API returns up to 10 pages of 30 events (max 300 recent events)
+  // We fetch 3 pages to get a reasonable snapshot
+  const eventPages = [1, 2, 3].map(p =>
+    fetch(`${API_BASE}/events?per_page=100&page=${p}`)
+      .then(r => r.json())
+      .catch(() => [])
+  );
+
+  Promise.all(eventPages).then(pages => {
+    const events = pages.flat().filter(e => e && e.created_at);
+
+    // Build contribution map for the past year
+    const contribMap = {};
+    const today = new Date();
+    // Initialize all days of the past year to 0
+    for (let i = 0; i < 365; i++) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      contribMap[key] = 0;
+    }
+
+    // Count pushes, creates, PRs, issues, reviews as contributions
+    const contribEvents = ['PushEvent', 'CreateEvent', 'PullRequestEvent',
+      'IssuesEvent', 'PullRequestReviewEvent', 'PullRequestReviewCommentEvent',
+      'CommitCommentEvent', 'IssueCommentEvent'];
+
+    events.forEach(e => {
+      if (contribEvents.includes(e.type)) {
+        const day = e.created_at.slice(0, 10);
+        if (contribMap.hasOwnProperty(day)) {
+          // PushEvent may contain multiple commits
+          if (e.type === 'PushEvent' && e.payload && e.payload.size) {
+            contribMap[day] += e.payload.size;
+          } else {
+            contribMap[day] += 1;
+          }
+        }
+      }
+    });
+
+    // Total contributions
+    const totalContribs = Object.values(contribMap).reduce((a, b) => a + b, 0);
+    const contribEl = document.getElementById('gh-contrib-count');
+    if (contribEl) contribEl.textContent = totalContribs > 0 ? totalContribs + '+' : '500+';
+
+    // Render heatmap
+    const container = document.getElementById('gh-graph-container');
+    if (container) {
+      container.innerHTML = '';
+
+      // Get sorted date keys (oldest first)
+      const sortedDays = Object.keys(contribMap).sort();
+
+      // Find max for level scaling
+      const maxVal = Math.max(...Object.values(contribMap), 1);
+
+      // Build 52 columns × 7 rows (weeks × days)
+      // Start from the Sunday of the oldest week
+      const startDate = new Date(sortedDays[0]);
+      startDate.setDate(startDate.getDate() - startDate.getDay()); // go back to Sunday
+
+      for (let col = 0; col < 52; col++) {
+        const colDiv = document.createElement('div');
+        colDiv.className = 'gh-graph-col';
+        for (let row = 0; row < 7; row++) {
+          const cellDate = new Date(startDate);
+          cellDate.setDate(cellDate.getDate() + col * 7 + row);
+          const key = cellDate.toISOString().slice(0, 10);
+          const val = contribMap[key] || 0;
+
+          // Determine level (0–4)
+          let level = 0;
+          if (val > 0) {
+            const ratio = val / maxVal;
+            if (ratio <= 0.25) level = 1;
+            else if (ratio <= 0.5) level = 2;
+            else if (ratio <= 0.75) level = 3;
+            else level = 4;
+          }
+
+          const dayDiv = document.createElement('div');
+          dayDiv.className = `gh-graph-day lvl-${level}`;
+          dayDiv.title = val > 0 ? `${val} contributions on ${key}` : `No contributions on ${key}`;
+          colDiv.appendChild(dayDiv);
+        }
+        container.appendChild(colDiv);
+      }
+
+      // Scroll to recent end
+      container.scrollLeft = container.scrollWidth;
+    }
+  });
+
+  // ─── 3. Fetch all repos → real language breakdown ───
+  fetch(`${API_BASE}/repos?per_page=100&sort=updated`)
+    .then(r => r.json())
+    .then(repos => {
+      if (!Array.isArray(repos)) return;
+
+      // Fetch language bytes for each repo
+      const langPromises = repos
+        .filter(r => !r.fork)
+        .map(repo =>
+          fetch(repo.languages_url)
+            .then(r => r.json())
+            .catch(() => ({}))
+        );
+
+      return Promise.all(langPromises);
+    })
+    .then(langResults => {
+      if (!langResults) return;
+
+      // Aggregate language bytes across all repos
+      const langTotals = {};
+      langResults.forEach(langs => {
+        Object.entries(langs).forEach(([lang, bytes]) => {
+          langTotals[lang] = (langTotals[lang] || 0) + bytes;
+        });
+      });
+
+      // Sort by bytes descending and take top 6
+      const sorted = Object.entries(langTotals)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6);
+
+      const totalBytes = sorted.reduce((sum, [, b]) => sum + b, 0);
+      if (totalBytes === 0) return;
+
+      // Render language bar
+      const barEl = document.getElementById('gh-lang-bar');
+      const legendEl = document.getElementById('gh-lang-legend');
+      if (!barEl || !legendEl) return;
+
+      barEl.innerHTML = '';
+      legendEl.innerHTML = '';
+
+      sorted.forEach(([lang, bytes]) => {
+        const pct = ((bytes / totalBytes) * 100).toFixed(1);
+        const color = LANG_COLORS[lang] || DEFAULT_LANG_COLOR;
+
+        // Bar segment
+        const seg = document.createElement('div');
+        seg.className = 'lang-segment';
+        seg.style.width = `${pct}%`;
+        seg.style.backgroundColor = color;
+        seg.title = `${lang} ${pct}%`;
+        barEl.appendChild(seg);
+
+        // Legend tag
+        const tag = document.createElement('span');
+        tag.className = 'lang-tag';
+        tag.innerHTML = `<span class="dot" style="background:${color}"></span> ${lang} ${pct}%`;
+        legendEl.appendChild(tag);
+      });
     })
     .catch(() => {});
 });
