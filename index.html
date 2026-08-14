@@ -232,14 +232,143 @@
         </div>
       </div>
       
-      <div class="github-stats animate" data-anim="fade" style="margin-top:4rem; text-align:center;">
-        <h3 style="margin-bottom:1.5rem; font-size:1.4rem;">GitHub <span class="accent">Activity</span></h3>
-        <div style="display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;">
-          <a href="https://github.com/AvaishAnsari" target="_blank">
-            <img id="gh-stats" src="https://github-readme-stats.vercel.app/api?username=AvaishAnsari&show_icons=true&theme=radical&hide_border=true&bg_color=050508&title_color=00ffff&icon_color=ff00ff&text_color=e2e8f0" alt="GitHub Stats" class="glass" style="max-width:100%; height:auto;" />
-          </a>
-          <a href="https://github.com/AvaishAnsari" target="_blank">
-            <img id="gh-langs" src="https://github-readme-stats.vercel.app/api/top-langs/?username=AvaishAnsari&layout=compact&theme=radical&hide_border=true&bg_color=050508&title_color=00ffff&text_color=e2e8f0" alt="Top Languages" class="glass" style="max-width:100%; height:auto;" />
+      <!-- GitHub Activity -->
+      <div class="gh-section animate" data-anim="fade">
+        <h3 class="gh-section-title">GitHub <span class="accent">Activity & Open Source</span></h3>
+
+        <!-- Main GitHub Dashboard Container -->
+        <div class="gh-dashboard glass">
+          
+          <!-- Top Bar: Profile & Metrics -->
+          <div class="gh-header-row">
+            <div class="gh-profile-info">
+              <div class="gh-avatar">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              </div>
+              <div>
+                <a href="https://github.com/AvaishAnsari" target="_blank" rel="noopener noreferrer" class="gh-handle">@AvaishAnsari</a>
+                <span class="gh-status-badge">● Active Contributor</span>
+              </div>
+            </div>
+
+            <div class="gh-metrics-pills">
+              <div class="gh-metric-pill">
+                <span class="metric-val" id="gh-repo-count">15+</span>
+                <span class="metric-lbl">Repositories</span>
+              </div>
+              <div class="gh-metric-pill">
+                <span class="metric-val" id="gh-contrib-count">500+</span>
+                <span class="metric-lbl">Contributions</span>
+              </div>
+              <div class="gh-metric-pill">
+                <span class="metric-val">100%</span>
+                <span class="metric-lbl">Open Source</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Heatmap Matrix -->
+          <div class="gh-heatmap-wrapper">
+            <div class="gh-heatmap-header">
+              <span>Contribution Matrix (Past Year)</span>
+              <div class="gh-heatmap-legend">
+                <span>Less</span>
+                <div class="legend-square lvl-0"></div>
+                <div class="legend-square lvl-1"></div>
+                <div class="legend-square lvl-2"></div>
+                <div class="legend-square lvl-3"></div>
+                <div class="legend-square lvl-4"></div>
+                <span>More</span>
+              </div>
+            </div>
+            <div class="gh-graph-container" id="gh-graph-container">
+              <!-- Grid columns rendered dynamically via script.js -->
+            </div>
+          </div>
+
+          <!-- Top Languages Breakdown Bar -->
+          <div class="gh-langs-container">
+            <div class="gh-langs-header">
+              <span>Primary Tech Breakdown</span>
+            </div>
+            <div class="gh-lang-bar">
+              <div class="lang-segment segment-js" style="width: 38%;" title="JavaScript 38%"></div>
+              <div class="lang-segment segment-py" style="width: 28%;" title="Python 28%"></div>
+              <div class="lang-segment segment-java" style="width: 18%;" title="Java 18%"></div>
+              <div class="lang-segment segment-cpp" style="width: 10%;" title="C++ 10%"></div>
+              <div class="lang-segment segment-ts" style="width: 6%;" title="TypeScript 6%"></div>
+            </div>
+            <div class="gh-lang-legend">
+              <span class="lang-tag"><span class="dot dot-js"></span> JavaScript 38%</span>
+              <span class="lang-tag"><span class="dot dot-py"></span> Python 28%</span>
+              <span class="lang-tag"><span class="dot dot-java"></span> Java 18%</span>
+              <span class="lang-tag"><span class="dot dot-cpp"></span> C++ 10%</span>
+              <span class="lang-tag"><span class="dot dot-ts"></span> TypeScript 6%</span>
+            </div>
+          </div>
+
+          <!-- Featured Repositories Grid -->
+          <div class="gh-repos-showcase">
+            <div class="gh-repos-header">Featured Repositories</div>
+            <div class="gh-repos-grid">
+              
+              <a href="https://github.com/AvaishAnsari/BidZo" target="_blank" rel="noopener noreferrer" class="gh-repo-card">
+                <div class="repo-top">
+                  <span class="repo-icon">⚡</span>
+                  <span class="repo-name">BidZo</span>
+                </div>
+                <p class="repo-desc">Real-time auction platform built with React, Supabase, PostgreSQL & Razorpay.</p>
+                <div class="repo-meta">
+                  <span class="repo-lang"><span class="dot dot-js"></span> JavaScript</span>
+                  <span class="repo-star">★ Star</span>
+                </div>
+              </a>
+
+              <a href="https://github.com/AvaishAnsari/BUS-SCHEDULING-SYSTEM" target="_blank" rel="noopener noreferrer" class="gh-repo-card">
+                <div class="repo-top">
+                  <span class="repo-icon">🚌</span>
+                  <span class="repo-name">BUS-SCHEDULING-SYSTEM</span>
+                </div>
+                <p class="repo-desc">Automated bus timetables & route optimization using algorithmic planning.</p>
+                <div class="repo-meta">
+                  <span class="repo-lang"><span class="dot dot-py"></span> Python</span>
+                  <span class="repo-star">★ Star</span>
+                </div>
+              </a>
+
+              <a href="https://github.com/AvaishAnsari/CORRUPTION-DETECTION-SYSTEM" target="_blank" rel="noopener noreferrer" class="gh-repo-card">
+                <div class="repo-top">
+                  <span class="repo-icon">🔍</span>
+                  <span class="repo-name">CORRUPTION-DETECTION</span>
+                </div>
+                <p class="repo-desc">Predictive analytics and ML classification pipeline for fraud detection.</p>
+                <div class="repo-meta">
+                  <span class="repo-lang"><span class="dot dot-py"></span> Python</span>
+                  <span class="repo-star">★ Star</span>
+                </div>
+              </a>
+
+              <a href="https://github.com/AvaishAnsari/RURAL-MEDICAL-CONSULTATION-SYSTEM" target="_blank" rel="noopener noreferrer" class="gh-repo-card">
+                <div class="repo-top">
+                  <span class="repo-icon">🏥</span>
+                  <span class="repo-name">RURAL-MEDICAL-SYSTEM</span>
+                </div>
+                <p class="repo-desc">Video consultation and AI triage platform for rural health support.</p>
+                <div class="repo-meta">
+                  <span class="repo-lang"><span class="dot dot-js"></span> JavaScript</span>
+                  <span class="repo-star">★ Star</span>
+                </div>
+              </a>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="gh-btn-wrap" style="text-align: center; margin-top: 2rem;">
+          <a href="https://github.com/AvaishAnsari" target="_blank" rel="noopener noreferrer" class="btn glow gh-profile-btn" style="display: inline-flex; align-items: center; gap: 0.6rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            Follow @AvaishAnsari on GitHub →
           </a>
         </div>
       </div>

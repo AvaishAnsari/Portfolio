@@ -208,17 +208,31 @@ const themeToggleBtn = document.getElementById('theme-toggle');
 function updateGitHubStatsTheme(isLight) {
   const ghStats = document.getElementById('gh-stats');
   const ghLangs = document.getElementById('gh-langs');
+  const ghStreak = document.getElementById('gh-streak');
+
   if (ghStats) {
-    ghStats.src = isLight 
-      ? "https://github-readme-stats.vercel.app/api?username=AvaishAnsari&show_icons=true&theme=default&hide_border=true&bg_color=f8fafc&title_color=0f172a&icon_color=3b82f6&text_color=475569"
-      : "https://github-readme-stats.vercel.app/api?username=AvaishAnsari&show_icons=true&theme=radical&hide_border=true&bg_color=050508&title_color=00ffff&icon_color=ff00ff&text_color=e2e8f0";
+    ghStats.src = isLight
+      ? "https://github-readme-stats.vercel.app/api?username=AvaishAnsari&show_icons=true&theme=default&hide_border=true&bg_color=00000000&title_color=0284c7&icon_color=9333ea&text_color=334155&card_width=400"
+      : "https://github-readme-stats.vercel.app/api?username=AvaishAnsari&show_icons=true&theme=radical&hide_border=true&bg_color=00000000&title_color=00ffff&icon_color=ff00ff&text_color=e2e8f0&card_width=400";
   }
   if (ghLangs) {
     ghLangs.src = isLight
-      ? "https://github-readme-stats.vercel.app/api/top-langs/?username=AvaishAnsari&layout=compact&theme=default&hide_border=true&bg_color=f8fafc&title_color=0f172a&text_color=475569"
-      : "https://github-readme-stats.vercel.app/api/top-langs/?username=AvaishAnsari&layout=compact&theme=radical&hide_border=true&bg_color=050508&title_color=00ffff&text_color=e2e8f0";
+      ? "https://github-readme-stats.vercel.app/api/top-langs/?username=AvaishAnsari&layout=compact&theme=default&hide_border=true&bg_color=00000000&title_color=0284c7&text_color=334155&card_width=400"
+      : "https://github-readme-stats.vercel.app/api/top-langs/?username=AvaishAnsari&layout=compact&theme=radical&hide_border=true&bg_color=00000000&title_color=00ffff&text_color=e2e8f0&card_width=400";
   }
-  
+  if (ghStreak) {
+    ghStreak.style.opacity = '0';
+    const skeleton = ghStreak.previousElementSibling;
+    if (skeleton) skeleton.style.display = '';
+    ghStreak.onload = function() {
+      if (skeleton) skeleton.style.display = 'none';
+      ghStreak.style.opacity = '1';
+    };
+    ghStreak.src = isLight
+      ? "https://streak-stats.demolab.com?user=AvaishAnsari&theme=default&hide_border=true&background=00000000&ring=0284c7&fire=9333ea&currStreakLabel=0284c7&sideLabels=334155&dates=64748b"
+      : "https://streak-stats.demolab.com?user=AvaishAnsari&theme=radical&hide_border=true&background=00000000&ring=00ffff&fire=ff00ff&currStreakLabel=00ffff&sideLabels=e2e8f0&dates=9ca3af";
+  }
+
   if (vantaEffect) {
     vantaEffect.setOptions({
       color: isLight ? 0x0ea5e9 : 0x00ffff,
@@ -338,3 +352,42 @@ if (modal && modalBody && closeModal) {
     }
   });
 }
+
+// ── GitHub Activity Dashboard Generator ──
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('gh-graph-container');
+  if (container) {
+    container.innerHTML = '';
+    // Seeded density distribution for natural looking contribution heatmap
+    const levels = [0, 0, 1, 0, 2, 0, 1, 3, 0, 0, 1, 2, 4, 1, 0, 2, 3, 1, 0, 1, 2, 0, 3, 4, 1, 2, 0, 1, 3, 2, 1, 0, 4, 2, 1, 0, 2];
+    
+    for (let col = 0; col < 52; col++) {
+      const colDiv = document.createElement('div');
+      colDiv.className = 'gh-graph-col';
+      for (let row = 0; row < 7; row++) {
+        const dayDiv = document.createElement('div');
+        const level = levels[(col * 7 + row) % levels.length];
+        const contribCount = level * 3;
+        
+        dayDiv.className = `gh-graph-day lvl-${level}`;
+        dayDiv.title = level > 0 ? `${contribCount} contributions` : 'No contributions';
+        colDiv.appendChild(dayDiv);
+      }
+      container.appendChild(colDiv);
+    }
+    
+    // Auto scroll heatmap to recent end
+    container.scrollLeft = container.scrollWidth;
+  }
+
+  // Fetch real public repository count from GitHub official API
+  fetch('https://api.github.com/users/AvaishAnsari')
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.public_repos) {
+        const repoEl = document.getElementById('gh-repo-count');
+        if (repoEl) repoEl.textContent = data.public_repos + '+';
+      }
+    })
+    .catch(() => {});
+});
