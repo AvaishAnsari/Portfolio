@@ -486,11 +486,11 @@ body * { cursor: none !important; }
 }
 
 /* Dark Mode Heatmap colors */
-.lvl-0 { background: rgba(255, 255, 255, 0.05); }
-.lvl-1 { background: rgba(0, 255, 255, 0.25); }
-.lvl-2 { background: rgba(0, 255, 255, 0.55); }
-.lvl-3 { background: rgba(0, 255, 255, 0.8); }
-.lvl-4 { background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+.lvl-0 { background: #161b22; }
+.lvl-1 { background: #0e4429; }
+.lvl-2 { background: #006d32; }
+.lvl-3 { background: #26a641; }
+.lvl-4 { background: #39d353; box-shadow: 0 0 6px rgba(57, 211, 83, 0.4); }
 
 /* Language Breakdown */
 .gh-langs-container {
@@ -682,11 +682,11 @@ body.light-mode .gh-lang-legend {
   color: #64748b;
 }
 
-body.light-mode .lvl-0 { background: #e2e8f0; }
-body.light-mode .lvl-1 { background: #bae6fd; }
-body.light-mode .lvl-2 { background: #38bdf8; }
-body.light-mode .lvl-3 { background: #0284c7; }
-body.light-mode .lvl-4 { background: #0369a1; box-shadow: none; }
+body.light-mode .lvl-0 { background: #ebedf0; }
+body.light-mode .lvl-1 { background: #9be9a8; }
+body.light-mode .lvl-2 { background: #40c463; }
+body.light-mode .lvl-3 { background: #30a14e; }
+body.light-mode .lvl-4 { background: #216e39; box-shadow: none; }
 
 body.light-mode .gh-repo-card {
   background: #f8fafc;

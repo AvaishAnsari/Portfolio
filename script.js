@@ -393,100 +393,85 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(() => {});
 
-  // ─── 2. Fetch events → real contribution heatmap + contribution count ───
-  // GitHub Events API returns up to 10 pages of 30 events (max 300 recent events)
-  // We fetch 3 pages to get a reasonable snapshot
-  const eventPages = [1, 2, 3].map(p =>
-    fetch(`${API_BASE}/events?per_page=100&page=${p}`)
-      .then(r => r.json())
-      .catch(() => [])
-  );
-
-  Promise.all(eventPages).then(pages => {
-    const events = pages.flat().filter(e => e && e.created_at);
-
-    // Build contribution map for the past year
-    const contribMap = {};
-    const today = new Date();
-    // Initialize all days of the past year to 0
-    for (let i = 0; i < 365; i++) {
-      const d = new Date(today);
-      d.setDate(d.getDate() - i);
-      const key = d.toISOString().slice(0, 10);
-      contribMap[key] = 0;
-    }
-
-    // Count pushes, creates, PRs, issues, reviews as contributions
-    const contribEvents = ['PushEvent', 'CreateEvent', 'PullRequestEvent',
-      'IssuesEvent', 'PullRequestReviewEvent', 'PullRequestReviewCommentEvent',
-      'CommitCommentEvent', 'IssueCommentEvent'];
-
-    events.forEach(e => {
-      if (contribEvents.includes(e.type)) {
-        const day = e.created_at.slice(0, 10);
-        if (contribMap.hasOwnProperty(day)) {
-          // PushEvent may contain multiple commits
-          if (e.type === 'PushEvent' && e.payload && e.payload.size) {
-            contribMap[day] += e.payload.size;
-          } else {
-            contribMap[day] += 1;
-          }
-        }
+  // ─── 2. Fetch REAL contribution data from GitHub contributions API ───
+  // This API scrapes the actual GitHub contribution graph, giving us the exact
+  // same data shown on the GitHub profile (accurate count + heatmap levels 0-4)
+  fetch(`https://github-contributions-api.jogruber.de/v4/${GH_USERNAME}?y=last`)
+    .then(r => r.json())
+    .then(data => {
+      // Update total contribution count
+      const contribEl = document.getElementById('gh-contrib-count');
+      if (contribEl && data.total && data.total.lastYear !== undefined) {
+        contribEl.textContent = data.total.lastYear + '+';
       }
-    });
 
-    // Total contributions
-    const totalContribs = Object.values(contribMap).reduce((a, b) => a + b, 0);
-    const contribEl = document.getElementById('gh-contrib-count');
-    if (contribEl) contribEl.textContent = totalContribs > 0 ? totalContribs + '+' : '500+';
+      // Render heatmap from real contribution data
+      const container = document.getElementById('gh-graph-container');
+      if (container && data.contributions && data.contributions.length > 0) {
+        container.innerHTML = '';
 
-    // Render heatmap
-    const container = document.getElementById('gh-graph-container');
-    if (container) {
-      container.innerHTML = '';
+        const contributions = data.contributions; // already sorted by date
 
-      // Get sorted date keys (oldest first)
-      const sortedDays = Object.keys(contribMap).sort();
+        // Find the starting Sunday to align the grid
+        const firstDate = new Date(contributions[0].date + 'T00:00:00');
+        const dayOfWeek = firstDate.getDay(); // 0=Sun, 6=Sat
 
-      // Find max for level scaling
-      const maxVal = Math.max(...Object.values(contribMap), 1);
-
-      // Build 52 columns × 7 rows (weeks × days)
-      // Start from the Sunday of the oldest week
-      const startDate = new Date(sortedDays[0]);
-      startDate.setDate(startDate.getDate() - startDate.getDay()); // go back to Sunday
-
-      for (let col = 0; col < 52; col++) {
-        const colDiv = document.createElement('div');
+        // Create week columns
+        let colDiv = document.createElement('div');
         colDiv.className = 'gh-graph-col';
-        for (let row = 0; row < 7; row++) {
-          const cellDate = new Date(startDate);
-          cellDate.setDate(cellDate.getDate() + col * 7 + row);
-          const key = cellDate.toISOString().slice(0, 10);
-          const val = contribMap[key] || 0;
 
-          // Determine level (0–4)
-          let level = 0;
-          if (val > 0) {
-            const ratio = val / maxVal;
-            if (ratio <= 0.25) level = 1;
-            else if (ratio <= 0.5) level = 2;
-            else if (ratio <= 0.75) level = 3;
-            else level = 4;
+        // Pad the first week with empty cells if it doesn't start on Sunday
+        for (let i = 0; i < dayOfWeek; i++) {
+          const emptyDiv = document.createElement('div');
+          emptyDiv.className = 'gh-graph-day lvl-0';
+          emptyDiv.style.visibility = 'hidden';
+          colDiv.appendChild(emptyDiv);
+        }
+
+        let cellsInCol = dayOfWeek;
+
+        contributions.forEach(contrib => {
+          if (cellsInCol === 7) {
+            container.appendChild(colDiv);
+            colDiv = document.createElement('div');
+            colDiv.className = 'gh-graph-col';
+            cellsInCol = 0;
           }
 
           const dayDiv = document.createElement('div');
-          dayDiv.className = `gh-graph-day lvl-${level}`;
-          dayDiv.title = val > 0 ? `${val} contributions on ${key}` : `No contributions on ${key}`;
+          // Use the level directly from the API (0-4) — matches GitHub exactly
+          dayDiv.className = `gh-graph-day lvl-${contrib.level}`;
+          dayDiv.title = `${contrib.count} contributions on ${contrib.date}`;
           colDiv.appendChild(dayDiv);
-        }
-        container.appendChild(colDiv);
-      }
+          cellsInCol++;
+        });
 
-      // Scroll to recent end
-      container.scrollLeft = container.scrollWidth;
-    }
-  });
+        // Append the last column
+        if (cellsInCol > 0) {
+          container.appendChild(colDiv);
+        }
+
+        // Scroll to the most recent end
+        container.scrollLeft = container.scrollWidth;
+      }
+    })
+    .catch(() => {
+      // Fallback: render empty heatmap if API fails
+      const container = document.getElementById('gh-graph-container');
+      if (container) {
+        container.innerHTML = '';
+        for (let col = 0; col < 52; col++) {
+          const colDiv = document.createElement('div');
+          colDiv.className = 'gh-graph-col';
+          for (let row = 0; row < 7; row++) {
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'gh-graph-day lvl-0';
+            colDiv.appendChild(dayDiv);
+          }
+          container.appendChild(colDiv);
+        }
+      }
+    });
 
   // ─── 3. Fetch all repos → real language breakdown ───
   fetch(`${API_BASE}/repos?per_page=100&sort=updated`)
